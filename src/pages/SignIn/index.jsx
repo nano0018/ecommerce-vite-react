@@ -1,5 +1,7 @@
+import Layout from "../../components/layout";
+
 function SignIn() {
-  return <div>SignIn</div>;
+  return <Layout>SignIn</Layout>;
 }
 
 export default SignIn;
