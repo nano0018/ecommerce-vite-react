@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import Layout from './../../components/layout/index';
-import Card from './../../components/card/index';
+import { Layout } from './../../components/layout/index';
+import { Card } from './../../components/card/index';
 import FetchData from '../../utils/FetchData';
+import { ProductDetail } from '../../components/productDetail';
 function Home() {
   const [items, setItems] = useState(null);
   useEffect(() => {
@@ -16,11 +17,12 @@ function Home() {
   return (
     <Layout>
       Home
-      <div className='grid gap-4 grid-cols-4 w-full max-w-screen-lg'>
+      <div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
         {items?.map((item) => (
           <Card key={item.id} data={item} />
         ))}
       </div>
+      <ProductDetail/>
     </Layout>
   );
 }
