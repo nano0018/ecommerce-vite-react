@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 export const ProductDetail = () => {
   const context = useContext(ShoppingCartContext);
-  console.log('Product: ', context.productData);
   return (
     <aside className={`${context.isProductDetailOpened ? 'flex' : 'hidden'} product-detail flex-col fixed right-0 border border-black rounded-lg bg-white`}>
       <div className="flex justify-between items-center p-6">

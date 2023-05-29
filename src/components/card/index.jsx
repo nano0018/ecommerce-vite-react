@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { ShoppingCartContext } from './../../context/ShoppingCartContext';
-import { PlusIcon } from '@heroicons/react/24/solid';
+import { CheckIcon, PlusIcon } from '@heroicons/react/24/solid';
 
 const Card = (data) => {
   const context = useContext(ShoppingCartContext);
@@ -8,6 +8,35 @@ const Card = (data) => {
     context.openProductDetail();
     context.setProductData(productDetail);
   };
+  const addProductoToCart = (event, productData) => {
+    event.stopPropagation();
+    context.setCount(context.count + 1);
+    context.setCartProducts([...context.cartProducts, productData]);
+    context.openCheckoutSideMenu();
+  };
+
+  const checkItem = (id) => {
+    const isInCart = context.cartProducts.some((product) => product.id === id);
+    const classElement = 'h-6 w-6 text-black';
+    if (!isInCart) {
+      return (
+        <div
+          className="absolute top-0 right-0 flex justify-center items-center bg-gray-400 w-6 h-6 rounded-full m-1.5 p-1.5 text-lg"
+          onClick={(event) => addProductoToCart(event, data.data)}
+        >
+          <PlusIcon className={classElement} />
+        </div>
+      );
+    }
+    return (
+      <div className="absolute top-0 right-0 flex justify-center items-center bg-gray-400 w-6 h-6 rounded-full m-1.5 p-1.5 text-lg">
+        <CheckIcon className={classElement} />
+      </div>
+    );
+  };
+
+  // Render
+
   return (
     <div
       onClick={() => showProduct(data.data)}
@@ -22,12 +51,7 @@ const Card = (data) => {
           src={data.data?.images[0]}
           alt={data.data?.title}
         />
-        <div
-          className="absolute top-0 right-0 flex justify-center items-center bg-gray-400 w-6 h-6 rounded-full m-1.5 p-1.5 text-lg"
-          onClick={() => context.setCount(context.count + 1)}
-        >
-          <PlusIcon className="h-6 w-6 text-black" />
-        </div>
+        {checkItem(data.data?.id)}
       </figure>
       <p className="flex justify-between">
         <span className="text-sm font-light">{data.data?.title}</span>

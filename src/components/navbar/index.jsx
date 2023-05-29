@@ -87,8 +87,8 @@ export const NavBar = () => {
             Sign-in
           </NavLink>
         </li>
-        <li className="flex items-center">
-        <ShoppingCartIcon className="h-6 w-6 text-black" />
+        <li className="flex items-center cursor-pointer" onClick={() => context.toggleCheckoutSideMenu()}>
+        <ShoppingCartIcon className="h-6 w-6 text-black"/>
           <p className='pl-2 font-bold'>{context.count}</p>
         </li>
       </ul>
