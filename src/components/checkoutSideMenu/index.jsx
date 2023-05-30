@@ -26,6 +26,7 @@ export const CheckoutSideMenu = () => {
     context.setOrder([...context.order, orderToAdd]);
     context.setCartProducts([]);
     context.setCount(0);
+    context.closeCheckoutSideMenu();
   }
 
   return (
@@ -36,7 +37,7 @@ export const CheckoutSideMenu = () => {
     >
       <div className="flex justify-between items-center p-6">
         <h2 className="font-medium text-xl">My Order</h2>
-        <div onClick={context.closeCheckoutSideMenu}>
+        <div onClick={() => context.closeCheckoutSideMenu()}>
           <XMarkIcon className="h-6 w-6 text-gray-600 cursor-pointer" />
         </div>
       </div>

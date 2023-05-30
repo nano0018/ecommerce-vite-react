@@ -31,5 +31,5 @@ OrderCard.propTypes = {
   imageUrl: PropTypes.array.isRequired,
   price: PropTypes.number.isRequired,
   id: PropTypes.any.isRequired,
-  deleteProduct: PropTypes.func.isRequired,
+  deleteProduct: PropTypes.any,
 };

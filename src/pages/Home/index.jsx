@@ -9,7 +9,6 @@ function Home() {
     const URL = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=100';
     try {
       FetchData(URL).then((data) => setItems(data));
-      console.log(items);
     } catch (error) {
       console.error(error);
     }
