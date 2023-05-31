@@ -1,9 +1,47 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import FetchData from '../utils/FetchData';
 
 export const ShoppingCartContext = createContext();
 
 export const ShoppingCartProvider = ({ children }) => {
+  // Get Products
+  const [items, setItems] = useState(null);
+
+  useEffect(() => {
+    const URL = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=100';
+    try {
+      FetchData(URL).then((data) => setItems(data));
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  // Get Products by name
+  const [searchedName, setSearchedName] = useState('');
+  const [filteredItem, setFilteredItem] = useState([]);
+
+  // Filter products by searchedName
+  const filterItemsByName = (items, searchedName) => {
+    let filteredItems;
+    if (searchedName.length) {
+      filteredItems = items?.filter((item) => {
+        const itemName = item.title.toLowerCase();
+        const searchName = searchedName.toLowerCase();
+        return itemName.includes(searchName);
+      });
+    }
+    return filteredItems;
+  };
+
+  // Changing product array by filter
+  useEffect(() => {
+    if (searchedName.length) {
+      console.log("filterItemsByName", filterItemsByName(items, searchedName))
+      setFilteredItem(filterItemsByName(items, searchedName));
+    }
+  }, [items, searchedName]);
+
   // Shopping cart count
   const [count, setCount] = useState(0);
 
@@ -39,8 +77,14 @@ export const ShoppingCartProvider = ({ children }) => {
   return (
     <ShoppingCartContext.Provider
       value={{
+        items,
+        setItems,
+        searchedName,
+        setSearchedName,
         count,
         setCount,
+        filteredItem,
+        setFilteredItem,
         isProductDetailOpened,
         openProductDetail,
         closeProductDetail,

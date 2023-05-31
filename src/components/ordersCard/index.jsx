@@ -8,7 +8,7 @@ export const OrdersCard = (props) => {
   const centerIcon = 'flex flex-row justify-items-start items-center';
   const { totalPrice, totalProducts } = props;
   return (
-    <div className="flex justify-between items-center mb-2 border border-black rounded-md w-96 m-2">
+    <div className="flex justify-between items-center mb-2 border border-gray-300 rounded-md w-96 m-2 shadow-md">
       <div className="flex m-4 flex-col">
         <p className="flex flex-row justify-between items-center">
           <CalendarDaysIcon className="w-5 h-5 mr-2"></CalendarDaysIcon>
@@ -22,7 +22,7 @@ export const OrdersCard = (props) => {
         </p>
       </div>
       <div className={centerIcon}>
-        <p className="mr-2 text-md">
+        <p className="text-md">
           Order price: <span className="font-bold">${totalPrice}</span>
         </p>
         <ChevronRightIcon className="w-6 h-6 mr-2" />

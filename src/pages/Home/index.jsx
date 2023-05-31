@@ -1,27 +1,43 @@
-import { useEffect, useState } from 'react';
 import { Layout } from './../../components/layout/index';
 import { Card } from './../../components/card/index';
-import FetchData from '../../utils/FetchData';
 import { ProductDetail } from '../../components/productDetail';
+import { useContext } from 'react';
+import { ShoppingCartContext } from '../../context/ShoppingCartContext';
 function Home() {
-  const [items, setItems] = useState(null);
-  useEffect(() => {
-    const URL = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=100';
-    try {
-      FetchData(URL).then((data) => setItems(data));
-    } catch (error) {
-      console.error(error);
+  const context = useContext(ShoppingCartContext);
+  const items = context.items;
+
+  // Render filtered items
+  const renderView = () => {
+    let renderItems = items;
+    if (context.searchedName?.length > 0) {
+      renderItems = context.filteredItem;
     }
-  }, []);
+
+    if (renderItems.length === 0) {
+      return <div>No items found</div>
+    }
+
+    return renderItems?.map((item) => (
+      <Card key={renderItems.id} data={item} />
+    ));
+  };
+
   return (
     <Layout>
-      Home
-      <div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
-        {items?.map((item) => (
-          <Card key={item.id} data={item} />
-        ))}
+      <div className="flex items-center justify-center relative w-96 mb-6">
+        <h1>Home - All products</h1>
       </div>
-      <ProductDetail/>
+      <input
+        type="text"
+        placeholder="Search a product"
+        className="rounded-lg border border-gray-200 w-96 p-2 mb-4 text-sm focus:outline-none"
+        onChange={(event) => context.setSearchedName(event.target.value)}
+      />
+      <div className="grid gap-4 grid-cols-4 w-full max-w-screen-lg">
+        {renderView()}
+      </div>
+      <ProductDetail />
     </Layout>
   );
 }
