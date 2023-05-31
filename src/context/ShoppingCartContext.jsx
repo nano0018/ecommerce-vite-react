@@ -6,7 +6,7 @@ export const ShoppingCartContext = createContext();
 
 export const ShoppingCartProvider = ({ children }) => {
   // Get Products
-  const [items, setItems] = useState(null);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
     const URL = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=100';
