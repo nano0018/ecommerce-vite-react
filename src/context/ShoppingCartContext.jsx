@@ -9,7 +9,7 @@ export const ShoppingCartProvider = ({ children }) => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const URL = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=100';
+    const URL = 'https://api.escuelajs.co/api/v1/products?offset=0&limit=150';
     try {
       FetchData(URL).then((data) => setItems(data));
     } catch (error) {
@@ -20,6 +20,8 @@ export const ShoppingCartProvider = ({ children }) => {
   // Get Products by name
   const [searchedName, setSearchedName] = useState('');
   const [filteredItem, setFilteredItem] = useState([]);
+  const [searchItemByCategory, setSearchItemByCategory] = useState('');
+  console.log('searchItemByCategory', searchItemByCategory);
 
   // Filter products by searchedName
   const filterItemsByName = (items, searchedName) => {
@@ -34,13 +36,30 @@ export const ShoppingCartProvider = ({ children }) => {
     return filteredItems;
   };
 
+// Filter products by category
+  const filterItemsByCategory = (items, searchedCategory) => {
+    let filteredItems;
+    filteredItems = items?.filter((item) => {
+      const category = item.category?.name.toLowerCase();
+      const searchCategory = searchedCategory.toLowerCase();
+      return category.includes(searchCategory);
+    });
+    return filteredItems;
+  };
+
   // Changing product array by filter
   useEffect(() => {
-    if (searchedName.length) {
-      console.log("filterItemsByName", filterItemsByName(items, searchedName))
-      setFilteredItem(filterItemsByName(items, searchedName));
+    if (searchItemByCategory) {
+      setFilteredItem(filterItemsByCategory(items, searchItemByCategory));
     }
-  }, [items, searchedName]);
+    if (searchedName) {
+      setFilteredItem(filterItemsByName(filterItemsByCategory(items, searchItemByCategory), searchedName));
+    }
+    return () => {
+      setFilteredItem([...items]);
+    }
+  }, [items, searchedName, searchItemByCategory]);
+  console.log("filteredItem", filteredItem);
 
   // Shopping cart count
   const [count, setCount] = useState(0);
@@ -81,6 +100,9 @@ export const ShoppingCartProvider = ({ children }) => {
         setItems,
         searchedName,
         setSearchedName,
+        filterItemsByCategory,
+        searchItemByCategory,
+        setSearchItemByCategory,
         count,
         setCount,
         filteredItem,

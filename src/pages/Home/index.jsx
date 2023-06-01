@@ -3,19 +3,25 @@ import { Card } from './../../components/card/index';
 import { ProductDetail } from '../../components/productDetail';
 import { useContext } from 'react';
 import { ShoppingCartContext } from '../../context/ShoppingCartContext';
+import { useParams } from 'react-router-dom';
 function Home() {
   const context = useContext(ShoppingCartContext);
   const items = context.items;
-
+  const params = useParams();
+  let category = String(params.category);
   // Render filtered items
   const renderView = () => {
     let renderItems = items;
+    if (category) {
+      renderItems = context.filteredItem;
+    }
+
     if (context.searchedName?.length > 0) {
       renderItems = context.filteredItem;
     }
 
     if (renderItems.length === 0) {
-      return <div>No items found</div>
+      return <div>No items found</div>;
     }
 
     return renderItems?.map((item) => (
